@@ -21,7 +21,11 @@ function App() {
   function handleSubmit(event) {
     event.preventDefault()
     if(!groceryName) {
-      //show alert
+      setAlert({
+        show: true,
+        msg: 'please enter the grocery name',
+        type:'danger'
+      })
     } else if(groceryName && isEditing) {
       //deal with edit
     }else {
@@ -34,7 +38,7 @@ function App() {
   return (
     <section className='container'>
       <h3 className='text-center mt-4'>Grocery Bud</h3>
-      {alert.show && <Alert {...alert} list={list} />}
+      {alert.show && <Alert {...alert} list={list} />} 
       <form onSubmit={handleSubmit}>
         <input type="text" className='form-control' 
           value={groceryName}

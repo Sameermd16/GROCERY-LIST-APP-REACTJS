@@ -5,10 +5,6 @@ export default function({show, msg, type, list}) {
 
 
     return (
-        <p>
-            {
-                
-            }
-        </p>
+       <p className={`text-${type}`}>{msg}</p>
     )
 }
