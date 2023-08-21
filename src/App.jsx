@@ -21,24 +21,26 @@ function App() {
   function handleSubmit(event) {
     event.preventDefault()
     if(!groceryName) {
-      setAlert({
-        show: true,
-        msg: 'please enter the grocery name',
-        type:'danger'
-      })
+      showAlert(true, 'please enter the grocery', 'danger')
     } else if(groceryName && isEditing) {
       //deal with edit
     }else {
+      showAlert(true, 'added to the list', 'success')
       const groceryNameWithID = {id: new Date().getTime().toString(), title:groceryName}
       setList([...list, groceryNameWithID])
       setGroceryName('')
     }
   }
 
+  function showAlert(show=false, msg='', type='') {
+    setAlert({show, msg, type}) 
+  }
+
+
   return (
     <section className='container'>
       <h3 className='text-center mt-4'>Grocery Bud</h3>
-      {alert.show && <Alert {...alert} list={list} />} 
+      {alert.show && <Alert {...alert} list={list} showAlert={showAlert} />} 
       <form onSubmit={handleSubmit}>
         <input type="text" className='form-control' 
           value={groceryName}
