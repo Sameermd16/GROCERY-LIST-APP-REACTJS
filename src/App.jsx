@@ -1,13 +1,22 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import Alert from './Alert'
 import List from './List'
 
+
+function getLocalStorage() {
+  let list = localStorage.getItem('list')
+  if(list) {
+    return JSON.parse(list)
+  }else {
+    return []
+  }
+}
+
 function App() {
 
-
   const [groceryName, setGroceryName] = useState('')
-  const [list, setList] = useState([])
+  const [list, setList] = useState(getLocalStorage())
   const [isEditing, setIsEditing] = useState(false)
   const [editID, setEditID] = useState(null)
 
@@ -60,6 +69,10 @@ function App() {
     setEditID(id)
     setGroceryName(specificItem.title)
   }
+
+  useEffect(() => {
+    localStorage.setItem('list', JSON.stringify(list))
+  }, [list])
 
   return (
     <section className='container'>
