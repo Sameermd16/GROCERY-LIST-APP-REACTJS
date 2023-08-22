@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react'
 
 
-export default function({show, msg, type, list, showAlert}) {
+export default function({msg, type, list, showAlert}) {
 
     useEffect(() => {
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
             showAlert()
-        }, 2000);
+        }, 3000);
+        return () => clearTimeout(timeout)
     }, [list])
 
     return (
-       <p className={`text-${type}`}>{msg}</p>
+       <small className={`text-${type}`}>{msg}</small>
     )
 }

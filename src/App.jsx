@@ -9,6 +9,7 @@ function App() {
   const [groceryName, setGroceryName] = useState('')
   const [list, setList] = useState([])
   const [isEditing, setIsEditing] = useState(false)
+  const [editID, setEditID] = useState(null)
 
   const [alert, setAlert] = useState(
     {
@@ -24,8 +25,17 @@ function App() {
       showAlert(true, 'please enter the grocery', 'danger')
     } else if(groceryName && isEditing) {
       //deal with edit
+      setList(list.map((item) => {
+        if(item.id === editID) {
+          return { ...item, title:groceryName}
+        } 
+        return item
+      }))
+      setGroceryName('')
+      setEditID(null)
+      setIsEditing(false)
     }else {
-      showAlert(true, 'added to the list', 'success')
+      showAlert(true, `'${groceryName}' added to the list`, 'success')
       const groceryNameWithID = {id: new Date().getTime().toString(), title:groceryName}
       setList([...list, groceryNameWithID])
       setGroceryName('')
@@ -35,7 +45,21 @@ function App() {
   function showAlert(show=false, msg='', type='') {
     setAlert({show, msg, type}) 
   }
+  function clearItems() {
+    showAlert(true, 'empty list', 'danger')
+    setList([])
+  }
 
+  function editItem(id) {
+    const specificItem = list.find((item) => {
+      return item.id === id 
+    })
+    console.log(specificItem)
+    setIsEditing(true)
+    //have to save this id somewhere to use it for editing
+    setEditID(id)
+    setGroceryName(specificItem.title)
+  }
 
   return (
     <section className='container'>
@@ -52,9 +76,11 @@ function App() {
         </div>
       </form>
       <main className='container'>
-        <List list={list} />
+        <List list={list} setList={setList} showAlert={showAlert} editItem={editItem} />
         <div className='text-center'>
-          <button className='btn btn-sm btn-outline-danger'>clear items</button>
+          <button className='btn btn-sm btn-outline-danger'
+            onClick={clearItems}
+          >clear items</button>
         </div>
       </main>
     </section>
